@@ -1,0 +1,107 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "API Documentation",
+        "description": "Login və Register API",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:5000",
+    "basePath": "/api",
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Authentication API"
+        }
+    ],
+    "schemes": ["http"],
+    "paths": {
+        "/auth/register": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "Yeni istifadəçi qeydiyyatı",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Qeydiyyat uğurludur"
+                    },
+                    "400": {
+                        "description": "İstifadəçi artıq mövcuddur"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "İstifadəçi girişi",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Giriş uğurludur"
+                    },
+                    "400": {
+                        "description": "Yanlış parol"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "User": {
+            "required": ["name", "surname", "email", "password"],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "surname": {
+                    "type": "string",
+                    "example": "Doe"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "john.doe@example.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password123"
+                }
+            }
+        },
+        "Login": {
+            "required": ["email", "password"],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "john.doe@example.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password123"
+                }
+            }
+        }
+    }
+}

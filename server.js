@@ -3,7 +3,8 @@ const app = express();
 const cors = require('cors');
 const connectDb = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
-// const { swaggerUiSetup, swaggerUiRender } = require("./config/swagger");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger/swagger.json');
 require("dotenv").config();
 
 // Connect to MongoDB
@@ -13,12 +14,12 @@ connectDb();
 app.use(cors());
 app.use(express.json());
 
-// Swagger UI 
-app.use(require('./routes/swaggerRoutes'));
+// Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routes
 app.use("/auth", authRoutes);
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   res.send("Electron ecommerce");
 });
 

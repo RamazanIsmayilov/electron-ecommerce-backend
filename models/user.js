@@ -13,12 +13,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter an email"],
     unique: true,
+    lowercase: true,
+    trim: true,
   },
   password: {
     type: String,
     required: [true, "Please enter a password"]
   },
 });
+
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

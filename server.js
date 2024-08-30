@@ -2,9 +2,8 @@ const express = require("express");
 const app = express();
 const cors = require('cors');
 const connectDb = require("./config/db");
-const authRoutes = require("./routes/authRoutes");
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger/swagger.json');
+const authRoutes = require("./routes/auth.routes");
+
 require("dotenv").config();
 
 // Connect to MongoDB
@@ -14,11 +13,9 @@ connectDb();
 app.use(cors());
 app.use(express.json());
 
-// Swagger
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routes
-app.use("/auth", authRoutes);
+app.use('/api/auth', authRoutes);
 app.get("/", (req, res) => {
   res.send("Electron ecommerce");
 });

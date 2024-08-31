@@ -1,23 +1,21 @@
-const authService = require('../services/auth.service');
+const { register, login } = require("../services/auth.service");
 
-const register = async (req, res) => {
+exports.userRegister = async (req, res) => {
+  const { name, surname, email, password } = req.body;
   try {
-    const { name, surname, email, password, role } = req.body;
-    const user = await authService.register(name, surname, email, password, role);
-    res.status(201).json({ message: 'User registered', user });
+    const result = await register(name, surname, email, password);
+    res.status(201).json(result);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
-const login = async (req, res) => {
+exports.userLogin = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const { email, password } = req.body;
-    const { token, user } = await authService.login(email, password);
-    res.json({ token, user });
+    const result = await login(email, password);
+    res.status(200).json(result);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
-
-module.exports = { register, login };

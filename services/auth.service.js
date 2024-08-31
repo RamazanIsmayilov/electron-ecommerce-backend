@@ -1,24 +1,34 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs'); 
 const jwt = require('jsonwebtoken');
 const User = require('../models/auth.model');
 
-const JWT_SECRET = 'your_jwt_secret';
+const saltRounds = 10; 
+const jwtSecret = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
-const register = async (name, surname, email, password, role = 'user') => {
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = new User({ name, surname, email, password: hashedPassword, role });
-  return user.save();
+const register = async (name, surname, email, password) => {
+  try {
+    const hashedPassword = await bcrypt.hash(password, saltRounds); 
+    const newUser = new User({ name, surname, email, password: hashedPassword });
+    await newUser.save();
+    return { message: 'User created successfully', newUser };
+  } catch (error) {
+    throw new Error('Registration error');
+  }
 };
 
 const login = async (email, password) => {
-  const user = await User.findOne({ email });
-  if (!user) throw new Error('User not found');
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return { message: 'User not found' };
+    
+    const compare = await bcrypt.compare(password, user.password);
+    if (!compare) return { message: 'Incorrect password' };
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) throw new Error('Invalid credentials');
-
-  const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
-  return { token, user };
+    const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '1h' });
+    return { token };
+  } catch (error) {
+    throw new Error('Login error');
+  }
 };
 
 module.exports = { register, login };

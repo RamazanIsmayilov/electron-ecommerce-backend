@@ -18,29 +18,14 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    bestseller: {
-      type: Boolean,
-      default: false,
-    },
-    trending: {
-      type: Boolean,
-      default: false,
-    },
-    new: {
-      type: Boolean,
-      default: false,
-    },
-    sale: {
-      type: Boolean,
-      default: false,
-    },
     stock: {
       type: Number,
       required: true,
       default: 0,
     },
     category: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
       required: true,
     },
     brand: {
@@ -66,7 +51,3 @@ const productSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("Product", productSchema);
-
-
-
- 

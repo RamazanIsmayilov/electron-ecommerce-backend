@@ -71,12 +71,6 @@ router.post("/", createProduct);
  *     responses:
  *       200:
  *         description: List of all products
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Product'
  */
 router.get("/", getProducts);
 
@@ -96,10 +90,6 @@ router.get("/", getProducts);
  *     responses:
  *       200:
  *         description: Product found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Product'
  *       404:
  *         description: Product not found
  */
@@ -127,10 +117,6 @@ router.get("/:id", getProductById);
  *     responses:
  *       200:
  *         description: Product updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Product'
  *       404:
  *         description: Product not found
  */

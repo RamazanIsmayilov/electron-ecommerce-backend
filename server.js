@@ -5,6 +5,7 @@ const connectDb = require("./config/db");
 const authRoutes = require("./routes/auth.routes");
 const productRoutes = require("./routes/product.routes");
 const categoryRoutes = require("./routes/category.routes")
+const brandRoutes = require("./routes/brand.routes")
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
 
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/products", productRoutes);
 app.use("/categories", categoryRoutes);
+app.use("/brands", brandRoutes);
 app.get("/", (req, res) => {
   res.send("Electron ecommerce");
 });

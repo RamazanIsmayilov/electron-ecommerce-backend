@@ -1,13 +1,15 @@
 const Product = require("../models/product.model");
 const Category = require('../models/category.model');
+const Brand = require('../models/brand.model');
 
 exports.createProduct = async (req, res) => {
   try { 
-    const { category } = req.body
+    const { category, brand } = req.body
     const categoryExists = await Category.findById(category);
+    const brandExists = await Brand.findById(brand);
 
-    if (!categoryExists) {
-      return res.status(400).json({ message: "Invalid category" });
+    if (!categoryExists || !brandExists) {
+      return res.status(400).json({ message: "Invalid category and brand" });
     }
 
     const product = new Product(req.body);
@@ -20,7 +22,7 @@ exports.createProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate('category')
+    const products = await Product.find().populate('category').populate('brand')
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -41,10 +43,11 @@ exports.getProductById = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   try {
-    const { category } = req.body;
+    const { category, brand } = req.body;
     const categoryExists = await Category.findById(category);
-    if (!categoryExists) {
-      return res.status(400).json({ message: "Invalid category" });
+    const brandExists = await Brand.findById(brand);
+    if (!categoryExists || !brandExists) {
+      return res.status(400).json({ message: "Invalid category and brand" });
     }
     const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedProduct) {

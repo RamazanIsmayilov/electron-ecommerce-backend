@@ -10,7 +10,21 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5001', 
+        url: 'http://localhost:5001',
+      },
+    ],
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [
+      {
+        BearerAuth: [],
       },
     ],
   },

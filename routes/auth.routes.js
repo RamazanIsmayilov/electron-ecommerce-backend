@@ -56,7 +56,9 @@ const { userRegister, userLogin } = require('../controllers/auth.controller');
  *       201:
  *         description: User registered successfully
  *       400:
- *         description: Bad request
+ *         description: Bad request, invalid data provided
+ *       500:
+ *         description: Internal server error
  */
 router.post('/register', userRegister);
 
@@ -75,8 +77,12 @@ router.post('/register', userRegister);
  *     responses:
  *       200:
  *         description: User logged in successfully
+ *       400:
+ *         description: Bad request, invalid credentials provided
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized, invalid credentials
+ *       500:
+ *         description: Internal server error
  */
 router.post('/login', userLogin);
 

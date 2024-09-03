@@ -1,4 +1,7 @@
 const express = require("express");
+const router = express.Router();
+const authMiddleware = require("../middlewares/auth.middleware");
+const adminMiddleware = require("../middlewares/admin.middleware");
 const {
   createProduct,
   getProducts,
@@ -7,7 +10,6 @@ const {
   deleteAllProducts,
   deleteProduct,
 } = require("../controllers/product.controller");
-const router = express.Router();
 
 /**
  * @swagger
@@ -60,7 +62,7 @@ const router = express.Router();
  *       500:
  *         description: Failed to create product
  */
-router.post("/", createProduct);
+router.post("/", authMiddleware, adminMiddleware, createProduct);
 
 /**
  * @swagger
@@ -72,7 +74,7 @@ router.post("/", createProduct);
  *       200:
  *         description: List of all products
  */
-router.get("/", getProducts);
+router.get("/", authMiddleware, adminMiddleware, getProducts);
 
 /**
  * @swagger
@@ -93,7 +95,7 @@ router.get("/", getProducts);
  *       404:
  *         description: Product not found
  */
-router.get("/:id", getProductById);
+router.get("/:id", authMiddleware, adminMiddleware, getProductById);
 
 /**
  * @swagger
@@ -120,7 +122,7 @@ router.get("/:id", getProductById);
  *       404:
  *         description: Product not found
  */
-router.put("/:id", updateProduct);
+router.put("/:id", authMiddleware, adminMiddleware, updateProduct);
 
 /**
  * @swagger
@@ -141,7 +143,7 @@ router.put("/:id", updateProduct);
  *       404:
  *         description: Product not found
  */
-router.delete("/:id", deleteProduct);
+router.delete("/:id", authMiddleware, adminMiddleware, deleteProduct);
 
 /**
  * @swagger
@@ -153,6 +155,6 @@ router.delete("/:id", deleteProduct);
  *       200:
  *         description: All products deleted successfully
  */
-router.delete("/", deleteAllProducts);
+router.delete("/", authMiddleware, adminMiddleware, deleteAllProducts);
 
 module.exports = router;

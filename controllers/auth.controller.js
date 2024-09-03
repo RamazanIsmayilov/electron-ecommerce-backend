@@ -1,12 +1,13 @@
 const { register, login } = require("../services/auth.service");
 
 exports.userRegister = async (req, res) => {
-  const { name, surname, email, password } = req.body;
+  const { name, surname, email, password, role } = req.body; 
   try {
-    const result = await register(name, surname, email, password);
+    const userRole = role || 'user';
+    const result = await register(name, surname, email, password, userRole);
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: `Registration error: ${error.message}` });
   }
 };
 
@@ -17,8 +18,8 @@ exports.userLogin = async (req, res) => {
     if (result.status) {
       return res.status(result.status).json({ message: result.message });
     }
-    res.status(200).json(result);
+    res.status(200).json(result); 
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: `Login error: ${error.message}` });
   }
 };

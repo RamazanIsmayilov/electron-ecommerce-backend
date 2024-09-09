@@ -18,8 +18,13 @@ connectDb();
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  allowedHeaders: ['Content-Type']
+}));
 app.use(express.json());
+app.options('*', cors());
 
 // Routes
 app.use("/auth", authRoutes);

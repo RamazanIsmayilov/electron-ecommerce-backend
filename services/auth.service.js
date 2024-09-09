@@ -13,7 +13,7 @@ const register = async (name, surname, email, password, role = 'user') => {
       surname,
       email,
       password: hashedPassword,
-      role, // Burada rol təyin olunur
+      role, 
     });
     await newUser.save();
     return { message: "User created successfully", newUser };

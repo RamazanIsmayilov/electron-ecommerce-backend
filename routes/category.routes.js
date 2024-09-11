@@ -6,6 +6,8 @@ const {
   updateCategory,
   deleteCategory,
 } = require("../controllers/category.controller");
+const adminMiddleware = require("../middlewares/admin.middleware");
+const authMiddleware = require("../middlewares/auth.middleware");
 
 /**
  * @swagger
@@ -37,7 +39,7 @@ const {
  *       500:
  *         description: Internal server error
  */
-router.post("/", createCategory);
+router.post("/",authMiddleware, adminMiddleware, createCategory);
 
 
 /**
@@ -52,7 +54,7 @@ router.post("/", createCategory);
  *       500:
  *         description: Internal server error
  */
-router.get("/", getCategories);
+router.get("/",authMiddleware, adminMiddleware, getCategories);
 
 /**
  * @swagger
@@ -86,7 +88,7 @@ router.get("/", getCategories);
  *       500:
  *         description: Internal server error
  */
-router.put("/:id", updateCategory);
+router.put("/:id",authMiddleware, adminMiddleware, updateCategory);
 
 /**
  * @swagger
@@ -109,6 +111,6 @@ router.put("/:id", updateCategory);
  *       500:
  *         description: Internal server error
  */
-router.delete("/:id", deleteCategory);
+router.delete("/:id",authMiddleware, adminMiddleware, deleteCategory);
 
 module.exports = router;

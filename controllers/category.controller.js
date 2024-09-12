@@ -2,11 +2,16 @@ const Category = require("../models/category.model");
 
 exports.createCategory = async (req, res) => {
   try {
-    const category = new Category(req.body);
-    await category.save();
-    res
-      .status(201)
-      .json({ message: "The category was successfully created", category });
+    const existingCategory = await Category.findOne({ name: req.body.name });
+    if (existingCategory) {
+      return res.status(400).json({ message: "This category is now available!" });
+    } else {
+      const category = new Category(req.body);
+      await category.save();
+      res
+        .status(201)
+        .json({ message: "Category successfully created", category });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

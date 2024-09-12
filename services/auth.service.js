@@ -32,7 +32,7 @@ const login = async (email, password) => {
     const compare = await bcrypt.compare(password, user.password);
     if (!compare) return { message: "Incorrect password", status: 401 };
 
-    const token = jwt.sign({ id: user._id, role: user.role }, jwtSecret, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id, role: user.role }, jwtSecret);
 
     return { token };
   } catch (error) {
@@ -40,6 +40,8 @@ const login = async (email, password) => {
     return { message: `Login error: ${error.message}`, status: 500 };
   }
 };
+
+
 
 
 module.exports = { register, login };

@@ -1,6 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { createBrand, getBrands, updateBrand, deleteBrand } = require("../controllers/brand.controller");
+const {
+  createBrand,
+  getBrands,
+  updateBrand,
+  deleteBrand,
+} = require("../controllers/brand.controller");
+const adminMiddleware = require("../middlewares/admin.middleware");
+const authMiddleware = require("../middlewares/auth.middleware");
 
 /**
  * @swagger
@@ -32,7 +39,7 @@ const { createBrand, getBrands, updateBrand, deleteBrand } = require("../control
  *       500:
  *         description: Internal server error
  */
-router.post("/", createBrand);
+router.post("/", authMiddleware, adminMiddleware, createBrand);
 
 /**
  * @swagger
@@ -46,7 +53,7 @@ router.post("/", createBrand);
  *       500:
  *         description: Internal server error
  */
-router.get("/", getBrands);
+router.get("/", authMiddleware, adminMiddleware, getBrands);
 
 /**
  * @swagger
@@ -80,7 +87,7 @@ router.get("/", getBrands);
  *       500:
  *         description: Internal server error
  */
-router.put("/:id", updateBrand);
+router.put("/:id", authMiddleware, adminMiddleware, updateBrand);
 
 /**
  * @swagger
@@ -103,6 +110,6 @@ router.put("/:id", updateBrand);
  *       500:
  *         description: Internal server error
  */
-router.delete("/:id", deleteBrand);
+router.delete("/:id", authMiddleware, adminMiddleware, deleteBrand);
 
-module.exports = router
+module.exports = router;

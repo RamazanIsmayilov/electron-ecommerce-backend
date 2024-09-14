@@ -2,11 +2,16 @@ const Brand = require("../models/brand.model");
 
 exports.createBrand = async (req, res) => {
   try {
-    const brand = new Brand(req.body);
-    await brand.save();
-    res
-      .status(201)
-      .json({ message: "The brand was successfully created", brand });
+    const existingBrand = await Brand.findOne({ name: req.body.name });
+    if (existingBrand) {
+      return res.status(400).json({ message: "This brand is now available!" });
+    } else {
+      const brand = new Brand(req.body);
+      await brand.save();
+      res
+        .status(201)
+        .json({ message: "The brand was successfully created", brand });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -38,10 +43,10 @@ exports.updateBrand = async (req, res) => {
 };
 
 exports.deleteBrand = async (req, res) => {
-    try {
-      await Brand.findByIdAndDelete(req.params.id);
-      res.status(200).json({ message: "The brand was successfully deleted" });
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
+  try {
+    await Brand.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: "The brand was successfully deleted" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 };

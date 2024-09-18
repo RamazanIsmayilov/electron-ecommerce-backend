@@ -4,7 +4,9 @@ exports.createCategory = async (req, res) => {
   try {
     const existingCategory = await Category.findOne({ name: req.body.name });
     if (existingCategory) {
-      return res.status(400).json({ message: "This category is now available!" });
+      return res
+        .status(400)
+        .json({ message: "This category is now available!" });
     } else {
       const category = new Category(req.body);
       await category.save();
@@ -51,5 +53,19 @@ exports.deleteCategory = async (req, res) => {
     res.status(200).json({ message: "The category was successfully deleted" });
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+exports.searchCategory = async (req, res) => {
+  const { query } = req.query;
+  try {
+    const categories = await Category.find({
+      name: { $regex: query, $options: "i" },
+    });
+    res.status(200).json(categories);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: `Error searching categories: ${error.message}` });
   }
 };

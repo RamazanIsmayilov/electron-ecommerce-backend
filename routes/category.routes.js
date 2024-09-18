@@ -5,6 +5,7 @@ const {
   getCategories,
   updateCategory,
   deleteCategory,
+  searchCategory,
 } = require("../controllers/category.controller");
 const adminMiddleware = require("../middlewares/admin.middleware");
 const authMiddleware = require("../middlewares/auth.middleware");
@@ -112,5 +113,28 @@ router.put("/:id",authMiddleware, adminMiddleware, updateCategory);
  *         description: Internal server error
  */
 router.delete("/:id",authMiddleware, adminMiddleware, deleteCategory);
+/**
+ * @swagger
+ * /categories/search:
+ *   get:
+ *     summary: Search categories by query
+ *     tags: [Categories]
+ *     parameters:
+ *       - name: query
+ *         in: query
+ *         required: true
+ *         description: Search query for categories
+ *         schema:
+ *           type: string
+ *           example: "Electronics"
+ *     responses:
+ *       200:
+ *         description: A list of matching categories
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/search", authMiddleware, adminMiddleware, searchCategory);
+
+
 
 module.exports = router;

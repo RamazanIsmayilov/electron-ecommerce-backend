@@ -34,7 +34,9 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     colors: {
-      type: [String],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Color",
+      required: true,
     },
     storages: {
       type: [String],

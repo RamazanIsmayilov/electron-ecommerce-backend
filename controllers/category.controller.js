@@ -37,6 +37,8 @@ exports.updateCategory = async (req, res) => {
     );
     if (!updatedCategory) {
       return res.status(404).json({ message: "Category not found" });
+    }else{
+      res.status(200).json({ message: "The category has been updated successfully", updatedCategory });
     }
     res.status(200).json(updatedCategory);
   } catch (error) {

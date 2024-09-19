@@ -126,7 +126,7 @@ router.delete("/:id",authMiddleware, adminMiddleware, deleteCategory);
  *         description: Search query for categories
  *         schema:
  *           type: string
- *           example: "Electronics"
+ *           example: "Accessories"
  *     responses:
  *       200:
  *         description: A list of matching categories

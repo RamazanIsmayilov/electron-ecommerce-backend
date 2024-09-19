@@ -5,6 +5,7 @@ const {
   getBrands,
   updateBrand,
   deleteBrand,
+  searchBrand,
 } = require("../controllers/brand.controller");
 const adminMiddleware = require("../middlewares/admin.middleware");
 const authMiddleware = require("../middlewares/auth.middleware");
@@ -100,8 +101,6 @@ router.put("/:id", authMiddleware, adminMiddleware, updateBrand);
  *         in: path
  *         required: true
  *         description: The ID of the brand to delete
- *         schema:
- *           type: string
  *     responses:
  *       200:
  *         description: Brand deleted
@@ -111,5 +110,28 @@ router.put("/:id", authMiddleware, adminMiddleware, updateBrand);
  *         description: Internal server error
  */
 router.delete("/:id", authMiddleware, adminMiddleware, deleteBrand);
+
+/**
+ * @swagger
+ * /brands/search:
+ *   get:
+ *     summary: Search brands by query
+ *     tags: [Brands]
+ *     parameters:
+ *       - name: query
+ *         in: query
+ *         required: true
+ *         description: Search query for brands
+ *         schema:
+ *           type: string
+ *           example: "Electronics"
+ *     responses:
+ *       200:
+ *         description: A list of matching brands
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/search", authMiddleware, adminMiddleware, searchBrand);
+
 
 module.exports = router;

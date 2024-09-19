@@ -35,8 +35,9 @@ exports.updateBrand = async (req, res) => {
     );
     if (!updatedBrand) {
       return res.status(404).json({ message: "Brand not found" });
+    }else{
+      res.status(200).json({ message: "The brand has been updated successfully", updatedBrand });
     }
-    res.status(200).json(updatedBrand);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -48,5 +49,17 @@ exports.deleteBrand = async (req, res) => {
     res.status(200).json({ message: "The brand was successfully deleted" });
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+exports.searchBrand = async (req, res) => {
+  const { query } = req.query;
+  try {
+    const brands = await Brand.find({
+      name: { $regex: query, $options: "i" },
+    });
+    res.status(200).json(brands);
+  } catch (error) {
+    res.json({ message: `Error searching brands: ${error.message}` });
   }
 };

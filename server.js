@@ -9,6 +9,7 @@ const categoryRoutes = require("./routes/category.routes");
 const brandRoutes = require("./routes/brand.routes");
 const colorRoutes = require("./routes/color.routes");
 const sizeRoutes = require("./routes/size.routes");
+const storageRoutes = require("./routes/storage.routes");
 const connectivityRoutes = require("./routes/connectivity.routes");
 
 require("dotenv").config();
@@ -47,6 +48,7 @@ app.use("/brands", brandRoutes);
 app.use("/colors", colorRoutes);
 app.use("/connectivities", connectivityRoutes);
 app.use("/sizes", sizeRoutes);
+app.use("/storages", storageRoutes);
 
 // Root route
 app.get("/", (req, res) => {

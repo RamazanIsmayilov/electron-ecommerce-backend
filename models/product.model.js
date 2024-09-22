@@ -33,15 +33,17 @@ const productSchema = new mongoose.Schema(
       ref: "Brand",
       required: true,
     },
-    colors: {
+    color: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Color"
     },
-    storages: {
-      type: [String],
+    storage: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Storage"
     },
-    sizes: {
-      type: [String],
+    size: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Size"
     },
     connectivity: {
       type: mongoose.Schema.Types.ObjectId,

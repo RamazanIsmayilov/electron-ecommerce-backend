@@ -1,5 +1,11 @@
 const express = require("express");
-const { createColor, getColors, updateColor, deleteColor, searchColor } = require("../controllers/color.controller");
+const {
+  createColor,
+  getColors,
+  updateColor,
+  deleteColor,
+  searchColor,
+} = require("../controllers/color.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
 const adminMiddleware = require("../middlewares/admin.middleware");
 const router = express.Router();
@@ -34,7 +40,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.post('/', authMiddleware, adminMiddleware, createColor)
+router.post("/", authMiddleware, adminMiddleware, createColor);
 
 /**
  * @swagger
@@ -48,7 +54,7 @@ router.post('/', authMiddleware, adminMiddleware, createColor)
  *       500:
  *         description: Internal server error
  */
-router.get('/', authMiddleware, adminMiddleware, getColors)
+router.get("/", authMiddleware, adminMiddleware, getColors);
 
 /**
  * @swagger
@@ -82,7 +88,7 @@ router.get('/', authMiddleware, adminMiddleware, getColors)
  *       500:
  *         description: Internal server error
  */
-router.put('/:id', authMiddleware, adminMiddleware, updateColor)
+router.put("/:id", authMiddleware, adminMiddleware, updateColor);
 
 /**
  * @swagger
@@ -103,7 +109,7 @@ router.put('/:id', authMiddleware, adminMiddleware, updateColor)
  *       500:
  *         description: Internal server error
  */
-router.delete('/:id', authMiddleware, adminMiddleware, deleteColor)
+router.delete("/:id", authMiddleware, adminMiddleware, deleteColor);
 
 /**
  * @swagger
@@ -125,9 +131,6 @@ router.delete('/:id', authMiddleware, adminMiddleware, deleteColor)
  *       500:
  *         description: Internal server error
  */
-router.get('/search', authMiddleware, adminMiddleware, searchColor)
+router.get("/search", authMiddleware, adminMiddleware, searchColor);
 
-
-
-
-module.exports = router
+module.exports = router;

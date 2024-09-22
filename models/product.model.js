@@ -35,8 +35,7 @@ const productSchema = new mongoose.Schema(
     },
     colors: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Color",
-      required: true,
+      ref: "Color"
     },
     storages: {
       type: [String],
@@ -45,7 +44,8 @@ const productSchema = new mongoose.Schema(
       type: [String],
     },
     connectivity: {
-      type: [String],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Connectivity"
     },
   },
   {

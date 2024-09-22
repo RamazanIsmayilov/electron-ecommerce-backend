@@ -1,6 +1,6 @@
 const { default: mongoose } = require("mongoose");
 
-const colorSchema = new mongoose.Schema(
+const connectivitySchema = new mongoose.Schema(
     {
         name: {
             type: String
@@ -11,4 +11,4 @@ const colorSchema = new mongoose.Schema(
     }
 )
 
-module.exports = mongoose.model("Color", colorSchema)
+module.exports = mongoose.model("Connectivity", connectivitySchema)

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true,
     },
@@ -17,11 +17,6 @@ const productSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
-    },
-    stock: {
-      type: Number,
-      required: true,
-      default: 0,
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,

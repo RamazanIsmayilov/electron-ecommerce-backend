@@ -10,6 +10,7 @@ const {
   deleteAllProducts,
   deleteProduct,
 } = require("../controllers/product.controller");
+const upload = require("../middlewares/multer")
 
 /**
  * @swagger
@@ -18,7 +19,7 @@ const {
  *     Product:
  *       type: object
  *       required:
- *         - title
+ *         - name
  *         - images
  *         - price
  *         - description
@@ -27,7 +28,7 @@ const {
  *         - brand
  *       example:
  *         id: 60c72b1f4f1a2c001c9e3d1e
- *         title: iPhone 12
+ *         name: iPhone 12
  *         images: ["image1.jpg", "image2.jpg"]
  *         price: 999
  *         description: "New generation iPhone"
@@ -62,7 +63,7 @@ const {
  *       500:
  *         description: Failed to create product
  */
-router.post("/", authMiddleware, adminMiddleware, createProduct);
+router.post("/",  upload.array("images", 5), authMiddleware, adminMiddleware, createProduct);
 
 /**
  * @swagger

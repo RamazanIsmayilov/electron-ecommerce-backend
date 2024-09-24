@@ -29,7 +29,9 @@ app.use(cors({
   credentials: true, 
 }));
 
-app.use(express.json());
+app.use(express.json()); 
+
+app.use("/uploads", express.static("uploads"));
 
 // Preflight request handling (for CORS)
 app.options('*', (req, res) => {

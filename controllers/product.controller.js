@@ -4,15 +4,8 @@ const Brand = require('../models/brand.model');
 
 exports.createProduct = async (req, res) => {
   try { 
-    const { category, brand } = req.body
-    const categoryExists = await Category.findById(category);
-    const brandExists = await Brand.findById(brand);
-
-    if (!categoryExists || !brandExists) {
-      return res.status(400).json({ message: "Invalid category and brand" });
-    }
-
-    const product = new Product(req.body);
+    const imagePaths = req.files ? req.files.map(file => file.filename) : [];
+    const product = new Product({ ...req.body, images: imagePaths });
     await product.save();
     res.status(201).json({ message: "The product was successfully created", product });
   } catch (error) {

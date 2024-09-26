@@ -1,21 +1,47 @@
 const Product = require("../models/product.model");
-const Category = require('../models/category.model');
-const Brand = require('../models/brand.model');
+const fs = require("fs");
+const path = require("path");
 
 exports.createProduct = async (req, res) => {
-  try { 
-    const imagePaths = req.files ? req.files.map(file => file.filename) : [];
-    const product = new Product({ ...req.body, images: imagePaths });
-    await product.save();
-    res.status(201).json({ message: "The product was successfully created", product });
+  try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: 'No files uploaded' });
+    }
+    const { name, price, description, category, brand, color, storage, size, connectivity } = req.body;
+    const images = req.files.map(file => file.filename); 
+
+    const productData = {
+      name,
+      images,
+      price,
+      description,
+      category,
+      brand,
+      color,
+      storage,
+      size,
+      connectivity
+    };
+    
+    const product = await Product.create(productData);
+    res.status(201).json({ message: 'Product created successfully', product });
+    console.log("Uploaded Files: ", req.files);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Failed to create product' });
   }
 };
 
+
 exports.getProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate('category').populate('brand').populate('color').populate('connectivity').populate('size').populate('storage')
+    const products = await Product.find()
+      .populate("category")
+      .populate("brand")
+      .populate("color")
+      .populate("storage")
+      .populate("size")
+      .populate("connectivity");
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -36,17 +62,32 @@ exports.getProductById = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   try {
-    const { category, brand } = req.body;
-    const categoryExists = await Category.findById(category);
-    const brandExists = await Brand.findById(brand);
-    if (!categoryExists || !brandExists) {
-      return res.status(400).json({ message: "Invalid category and brand" });
-    }
-    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedProduct) {
+    const updatedData = req.body;
+    const product = await Product.findById(req.params.id);
+    if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
-    res.status(200).json(updatedProduct);
+
+    if (req.files) {
+      product.images.forEach((image) => {
+        const imagePath = path.join(__dirname, "../uploads", image);
+        fs.unlink(imagePath, (err) => {
+          if (err) {
+            console.error("Failed to delete image:", err);
+          }
+        });
+      });
+      updatedData.images = req.files.map((file) => file.filename);
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      updatedData,
+      { new: true }
+    );
+    res
+      .status(200)
+      .json({ message: "Product updated successfully", updatedProduct });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -54,10 +95,21 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
   try {
-    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
-    if (!deletedProduct) {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
+
+    product.images.forEach((image) => {
+      const imagePath = path.join(__dirname, "../uploads", image);
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error("Failed to delete image:", err);
+        }
+      });
+    });
+
+    await Product.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -66,8 +118,21 @@ exports.deleteProduct = async (req, res) => {
 
 exports.deleteAllProducts = async (req, res) => {
   try {
+    const products = await Product.find();
+    products.forEach((product) => {
+      product.images.forEach((image) => {
+        const imagePath = path.join(__dirname, "../uploads", image);
+        fs.unlink(imagePath, (err) => {
+          if (err) {
+            console.error("Failed to delete image:", err);
+          }
+        });
+      });
+    });
     await Product.deleteMany();
-    res.status(200).json({ message: 'All products have been deleted successfully' });
+    res
+      .status(200)
+      .json({ message: "All products have been deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

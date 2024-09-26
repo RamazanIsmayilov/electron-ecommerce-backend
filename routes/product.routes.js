@@ -10,40 +10,7 @@ const {
   deleteAllProducts,
   deleteProduct,
 } = require("../controllers/product.controller");
-const upload = require("../middlewares/multer")
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     Product:
- *       type: object
- *       required:
- *         - name
- *         - images
- *         - price
- *         - description
- *         - stock
- *         - category
- *         - brand
- *       example:
- *         id: 60c72b1f4f1a2c001c9e3d1e
- *         name: iPhone 12
- *         images: ["image1.jpg", "image2.jpg"]
- *         price: 999
- *         description: "New generation iPhone"
- *         bestseller: true
- *         trending: false
- *         new: true
- *         sale: false
- *         stock: 10
- *         category: "Smartphones"
- *         brand: "Apple"
- *         colors: ["Black", "White"]
- *         storages: ["64GB", "128GB"]
- *         sizes: ["5.4 inch", "6.1 inch"]
- *         connectivity: ["WiFi", "4G", "5G"]
- */
+const upload = require("../middlewares/upload.middleware");
 
 /**
  * @swagger
@@ -54,16 +21,40 @@ const upload = require("../middlewares/multer")
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/Product'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               description:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               brand:
+ *                 type: string
+ *               color:
+ *                 type: string
+ *               storage:
+ *                 type: string
+ *               size:
+ *                 type: string
+ *               connectivity:
+ *                 type: string
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
  *     responses:
  *       201:
- *         description: The product was created successfully
+ *         description: Product created successfully
  *       500:
  *         description: Failed to create product
  */
-router.post("/",  upload.array("images", 5), authMiddleware, adminMiddleware, createProduct);
+router.post("/", upload.array('images'), authMiddleware, adminMiddleware, createProduct);
 
 /**
  * @swagger
@@ -114,16 +105,40 @@ router.get("/:id", authMiddleware, adminMiddleware, getProductById);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/Product'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *               price:
+ *                 type: number
+ *               description:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               brand:
+ *                 type: string
+ *               color:
+ *                 type: string
+ *               storage:
+ *                 type: string
+ *               size:
+ *                 type: string
+ *               connectivity:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Product updated successfully
  *       404:
  *         description: Product not found
  */
-router.put("/:id", authMiddleware, adminMiddleware, updateProduct);
+router.put("/:id", upload.array('images'), authMiddleware, adminMiddleware, updateProduct);
 
 /**
  * @swagger

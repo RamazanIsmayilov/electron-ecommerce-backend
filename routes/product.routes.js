@@ -161,16 +161,4 @@ router.put("/:id", upload.array('images'), authMiddleware, adminMiddleware, upda
  */
 router.delete("/:id", authMiddleware, adminMiddleware, deleteProduct);
 
-/**
- * @swagger
- * /products:
- *   delete:
- *     summary: Delete all products
- *     tags: [Products]
- *     responses:
- *       200:
- *         description: All products deleted successfully
- */
-router.delete("/", authMiddleware, adminMiddleware, deleteAllProducts);
-
 module.exports = router;

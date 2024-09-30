@@ -11,6 +11,7 @@ const colorRoutes = require("./routes/color.routes");
 const sizeRoutes = require("./routes/size.routes");
 const storageRoutes = require("./routes/storage.routes");
 const connectivityRoutes = require("./routes/connectivity.routes");
+const path = require('path');
 
 require("dotenv").config();
 
@@ -31,7 +32,7 @@ app.use(cors({
 
 app.use(express.json()); 
 
-app.use("/uploads", express.static("uploads"));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Preflight request handling (for CORS)
 app.options('*', (req, res) => {

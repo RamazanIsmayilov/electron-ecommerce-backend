@@ -4,13 +4,10 @@ const path = require("path");
 
 exports.createProduct = async (req, res) => {
   try {
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ message: 'No files uploaded' });
-    }
     const { name, price, description, category, brand, color, storage, size, connectivity } = req.body;
     const images = req.files.map(file => file.filename); 
 
-    const productData = {
+    const product = new Product( {
       name,
       images,
       price,
@@ -21,11 +18,11 @@ exports.createProduct = async (req, res) => {
       storage,
       size,
       connectivity
-    };
+    });
+    console.log(req.files);
     
-    const product = await Product.create(productData);
+    await product.save()
     res.status(201).json({ message: 'Product created successfully', product });
-    console.log("Uploaded Files: ", req.files);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Failed to create product' });
@@ -111,28 +108,6 @@ exports.deleteProduct = async (req, res) => {
 
     await Product.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "Product deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-exports.deleteAllProducts = async (req, res) => {
-  try {
-    const products = await Product.find();
-    products.forEach((product) => {
-      product.images.forEach((image) => {
-        const imagePath = path.join(__dirname, "../uploads", image);
-        fs.unlink(imagePath, (err) => {
-          if (err) {
-            console.error("Failed to delete image:", err);
-          }
-        });
-      });
-    });
-    await Product.deleteMany();
-    res
-      .status(200)
-      .json({ message: "All products have been deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

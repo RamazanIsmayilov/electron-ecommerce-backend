@@ -15,9 +15,9 @@ exports.createProduct = async (req, res) => {
       category,
       brand,
       color,
-      storage,
-      size,
-      connectivity
+      storage: storage || null,
+      size: size || null,
+      connectivity: connectivity || null
     });
     
     await product.save()
@@ -89,6 +89,7 @@ exports.updateProduct = async (req, res) => {
   }
 };
 
+
 exports.deleteProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -97,7 +98,7 @@ exports.deleteProduct = async (req, res) => {
     }
 
     product.images.forEach((image) => {
-      const imagePath = path.join(__dirname, "../uploads", image);
+      const imagePath = path.join(__dirname, "../uploads", path.basename(image));
       fs.unlink(imagePath, (err) => {
         if (err) {
           console.error("Failed to delete image:", err);

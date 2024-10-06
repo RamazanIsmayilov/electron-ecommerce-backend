@@ -30,7 +30,8 @@ const productSchema = new mongoose.Schema(
     },
     color: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Color"
+      ref: "Color",
+      required: true
     },
     storage: {
       type: mongoose.Schema.Types.ObjectId,

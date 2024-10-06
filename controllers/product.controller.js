@@ -5,11 +5,11 @@ const path = require("path");
 exports.createProduct = async (req, res) => {
   try {
     const { name, price, description, category, brand, color, storage, size, connectivity } = req.body;
-    const images = req.files.map(file => file.filename); 
+    const imageUrls = req.files.map(file => `http://localhost:5001/uploads/${file.filename}`); 
 
     const product = new Product( {
       name,
-      images,
+      images: imageUrls,
       price,
       description,
       category,
@@ -19,7 +19,6 @@ exports.createProduct = async (req, res) => {
       size,
       connectivity
     });
-    console.log(req.files);
     
     await product.save()
     res.status(201).json({ message: 'Product created successfully', product });

@@ -9,8 +9,31 @@ const {
   updateProduct,
   deleteAllProducts,
   deleteProduct,
+  searchProduct,
 } = require("../controllers/product.controller");
 const upload = require("../middlewares/upload.middleware");
+
+/**
+ * @swagger
+ * /products/search:
+ *   get:
+ *     summary: Search products by query
+ *     tags: [Products]
+ *     parameters:
+ *       - name: query
+ *         in: query
+ *         required: true
+ *         description: Search query for products
+ *         schema:
+ *           type: string
+ *           example: "test"
+ *     responses:
+ *       200:
+ *         description: A list of matching products
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/search", searchProduct);
 
 /**
  * @swagger

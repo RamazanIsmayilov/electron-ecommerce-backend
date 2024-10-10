@@ -28,11 +28,11 @@ const productSchema = new mongoose.Schema(
       ref: "Brand",
       required: true,
     },
-    color: {
+    color: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Color",
       required: true
-    },
+    }],
     storage: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Storage"

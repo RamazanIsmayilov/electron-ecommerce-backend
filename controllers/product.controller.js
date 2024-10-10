@@ -1,6 +1,7 @@
 const Product = require("../models/product.model");
 const fs = require("fs");
 const path = require("path");
+const mongoose  = require("mongoose");
 
 exports.createProduct = async (req, res) => {
   try {
@@ -15,6 +16,9 @@ exports.createProduct = async (req, res) => {
       size,
       connectivity,
     } = req.body;
+
+    const colorArray = Array.isArray(color) ? color : JSON.parse(color);
+    const colors = colorArray.map(id => new mongoose.Types.ObjectId(id)); 
     const imageUrls = req.files.map(
       (file) => `http://localhost:5001/uploads/${file.filename}`
     );
@@ -26,7 +30,7 @@ exports.createProduct = async (req, res) => {
       description,
       category,
       brand,
-      color,
+      color: colors,
       storage: storage || null,
       size: size || null,
       connectivity: connectivity || null,
